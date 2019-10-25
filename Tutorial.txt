@@ -1,0 +1,65 @@
+
+Creating Producer Consumer via terminal :
+
+Download the 2.3.0 release and un-tar it.
+	
+> tar -xzf kafka_2.12-2.3.0.tgz
+> cd kafka_2.12-2.3.0
+
+Start Zookeeper server in the terminal 
+
+> bin/zookeeper-server-start.sh config/zookeeper.properties
+[2013-04-22 15:01:37,495] INFO Reading configuration from: config/zookeeper.properties (org.apache.zookeeper.server.quorum.QuorumPeerConfig)
+...
+
+In a new terminal Start Kafka server:
+> bin/kafka-server-start.sh config/server.properties
+[2013-04-22 15:01:47,028] INFO Verifying properties (kafka.utils.VerifiableProperties)
+[2013-04-22 15:01:47,051] INFO Property socket.send.buffer.bytes is overridden to 1048576 (kafka.utils.VerifiableProperties)
+...
+
+In a new terminal create a topic named "test" with a single partition and only one replica:
+	
+> bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+
+We can now see that topic if we run the list topic command:
+	
+> bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+test
+
+In one terminal window create kafka producer :
+Run the producer and then type a few messages into the console to send to the server.	
+> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+This is a message
+This is another message
+
+In another termial window create kafka consumer:
+Kafka also has a command line consumer that will dump out messages to standard output.
+	
+> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+This is a message
+This is another message
+
+You have 4 terminal windows open right now. 
+
+
+Creating producer consumer via python file:
+
+Make sure Kafka server and zookeeper is running on two terminal windows as described above.
+
+Install Kafka-python
+pip3 install kafka-python
+
+Create a topic named test
+
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+
+Next create a file named producer.py
+and also a file named consumer.py in the same path consumer.py
+
+Open a command prompt and go to the directory where you saved producer.py and consumer.py. Execute producer.py and open a new command prompt. Launch consumer.py and look how it reads all the messages, including the new ones.
+
+
+
+
+
